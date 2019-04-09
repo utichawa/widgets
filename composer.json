@@ -1,0 +1,54 @@
+{
+    "name": "utichawa/widgets",
+    "description": "widgets",
+    "keywords": [
+        "utichawa",
+        "widgets"
+    ],
+    "homepage": "https://github.com/utichawa/widgets",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": ":Mechiche Yassine",
+            "email": "mechicheyassine@gmail.com",
+            "homepage": "https://utichawa.be",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "dimsav/laravel-translatable": "^9.4"
+    },
+    "require-dev": {
+        "larapack/dd": "^1.0",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Utichawa\\Widgets\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Utichawa\\Widgets\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Utichawa\\Widgets\\WidgetServiceProvider"
+            ],
+            "aliases": {
+                "Widget": "Utichawa\\Widgets\\WidgetFacade"
+            }
+        }
+    }
+}

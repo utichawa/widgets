@@ -1,0 +1,112 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+use Utichawa\Widgets\Models\Widget;
+use Utichawa\Widgets\Models\WidgetTranslation;
+use Utichawa\Widgets\Models\WidgetElement;
+use Utichawa\Widgets\Models\WidgetMenu;
+
+class CreateWidgetsTables extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return  void
+     */
+    public function up()
+    {
+        if (!Schema::hasTable((new Widget)->getTable())) {
+            Schema::create((new Widget)->getTable(), function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('reference')->unique();
+                $table->string('placement');
+                $table->integer('home_id')->nullable();
+                $table->integer('module_id')->unsigned()->nullable();
+                //$table->foreign('module_id')->references('id')->on('modules');
+                $table->string('order_column')->nullable();
+                $table->string('order_column_type')->nullable();
+                $table->string('type')->default('single');
+                $table->string('select_type')->default('select');
+                $table->integer('number_for_latest')->nullable();
+                $table->boolean('is_active')->default(1);
+                $table->integer('order')->default(0);
+                $table->integer('deleted_by')->nullable();
+                $table->integer('created_by')->nullable();
+                $table->integer('updated_by')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable((new WidgetTranslation)->getTable())) {
+            Schema::create((new WidgetTranslation)->getTable(), function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('widget_id')->unsigned();
+                $table->foreign('widget_id')->references('id')->on((new Widget)->getTable());
+                $table->string('locale');
+                $table->string('name');
+                $table->text('description')->nullable();
+                $table->string('button_title')->default('Lire la suite');
+                //$table->integer('deleted_by')->nullable();
+                //$table->integer('created_by')->nullable();
+                //$table->integer('updated_by')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+
+
+        if (!Schema::hasTable((new WidgetElement)->getTable())) {
+            Schema::create((new WidgetElement)->getTable(), function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('widget_id')->unsigned();
+                $table->foreign('widget_id')->references('id')->on('widgets');
+                $table->integer('widget_element_id')->unsigned();
+                $table->boolean('is_active')->default(1);
+                $table->integer('order')->nullable();
+                $table->integer('deleted_by')->nullable();
+                $table->integer('created_by')->nullable();
+                $table->integer('updated_by')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+        if (!Schema::hasTable((new WidgetMenu)->getTable())) {
+            Schema::create((new WidgetMenu)->getTable(), function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('menu_id')->unsigned();
+                //$table->foreign('menu_id')->references('id')->on('menus');
+                $table->integer('widget_id')->unsigned();
+                $table->foreign('widget_id')->references('id')->on('widgets');
+                $table->integer('deleted_by')->nullable();
+                $table->integer('created_by')->nullable();
+                $table->integer('updated_by')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return  void
+     */
+    public function down()
+    {
+        if (Schema::hasTable((new WidgetTranslation)->getTable())) {
+            Schema::drop((new WidgetTranslation)->getTable());
+        }
+        if (Schema::hasTable((new Widget)->getTable())) {
+            Schema::drop((new Widget)->getTable());
+        }
+        if (Schema::hasTable((new WidgetElement)->getTable())) {
+            Schema::drop((new WidgetElement)->getTable());
+        }
+        if (Schema::hasTable((new WidgetMenu)->getTable())) {
+            Schema::drop((new WidgetMenu)->getTable());
+        }
+    }
+}
