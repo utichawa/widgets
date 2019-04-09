@@ -39,7 +39,11 @@
 
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "bin-dir": "bin",
+        "github-oauth": {
+            "github.com": "725cae1bd1730f9af998788164c152e22f187c76"
+        }
     },
     "extra": {
         "laravel": {
